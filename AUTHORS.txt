@@ -1,0 +1,6 @@
+This file contains the list of people involved in the development of "Piwik PRO Consent Manager Custom Form" along its history.
+
+Adam Przybylski <https://github.com/adamprzybylski88>
+Piotr Niewiadomski <https://github.com/PiotrPress>
+
+Great thanks to Piwik PRO <https://piwik.pro> for allowing releasing "Piwik PRO Consent Manager Custom Form" as free software!

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 140 140" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>ico</dc:title>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <title>ico</title>
+ <g fill="none" transform="matrix(1.5604 0 0 1.5604 20.136 17.9)">
+  <g id="Why-Piwik-PRO" transform="translate(-793,-2710)">
+   <g transform="translate(795,2713)">
+    <path stroke-width="3.6" stroke="#1b5226" d="m59.911 13.114v20.015c0 18.228-12.342 34.122-29.97 38.598-17.599-4.46-29.941-20.369-29.941-38.597v-20.016c13.859-1.565 21.708-6.8537 29.956-13.028 8.247 6.1743 16.097 11.463 29.955 13.028z"/>
+    <path d="m29.956 61.17c-11.974-3.812-20.2-14.955-20.2-27.697v-12.236c8.412-1.839 14.592-5.238 20.2-9.117 5.7279 3.9854 11.788 7.3175 20.2 9.1304v12.236c0 12.729-8.2261 23.872-20.2 27.684z" stroke="#329e48" stroke-linecap="round" stroke-width="3.96"/>
+   </g>
+  </g>
+ </g>
+</svg>
