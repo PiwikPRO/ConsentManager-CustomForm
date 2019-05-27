@@ -28,7 +28,7 @@ Include JS script before `</body>` HTML element on your site.
 Include CSS style after `<head>` HTML element on your site.
 
 ```
-<link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.0.0/style.min.css' integrity="sha384-dDN56KdFuq4rR9Ee7gY9Pvx1zBMNtMKUMqoh/lQZd1dKzWU+YvMon3ILpiGZ08L/" crossorigin="anonymous"  />
+<link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.0.0/style.min.css' integrity="sha384-dDN56KdFuq4rR9Ee7gY9Pvx1zBMNtMKUMqoh/lQZd1dKzWU+YvMon3ILpiGZ08L/" crossorigin="anonymous" />
 ```
 
 ### Privacy Settings
@@ -43,7 +43,7 @@ Insert consent form link on your privacy policy page section that will display a
 ```
 <html>
     <head>
-        <link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.0.0/style.min.css' integrity="sha384-ugZ3ZF/kA71xtx3j9zySjcAy54qdqM5V+ahuCOyjlkUK+GoTiCCoeso654GZcq74" crossorigin="anonymous"  />
+        <link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.0.0/style.min.css' integrity="sha384-dDN56KdFuq4rR9Ee7gY9Pvx1zBMNtMKUMqoh/lQZd1dKzWU+YvMon3ILpiGZ08L/" crossorigin="anonymous" />
     </head>
     <body>
         <!-- paste Piwik PRO Tracking Code here -->
