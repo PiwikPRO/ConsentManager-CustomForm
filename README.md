@@ -6,6 +6,16 @@ Thanks to that you’ll be able to build own consents form with the behavior you
   
 Please take a look at our documentation about [Consent Manager JavaScript API](https://developers.piwik.pro/en/latest/consent_manager/api.html) for more details.
 
+## Screenshots
+
+Consent Manager Custom Form
+
+![Screenshot 1](/screenshot1.png?raw=true)
+
+Individual choices drop-down
+
+![Screenshot 2](/screenshot2.png?raw=true)
+
 ## Installation
 
 ### JavaScript API
