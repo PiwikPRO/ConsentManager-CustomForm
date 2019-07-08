@@ -68,14 +68,14 @@ Insert consent form link on your privacy policy page section that will display a
 
 ## Changelog
 
-*1.0.1*
+**1.0.1**
 
-_Release date: 08.07.2019_
+*Release date: 08.07.2019*
 * Added support for older IE versions.
 
-*1.0.0*
+**1.0.0**
 
-_Release date: 27.05.2019_
+*Release date: 27.05.2019*
 * First stable version.
 
 ## License
