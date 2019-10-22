@@ -280,6 +280,9 @@
   -o-transition: all linear .15s;
   min-width: 160px;
 }
+#ppms_consent_container .ppms_btn.ppms_wide {
+  width: 100%;
+}
 #ppms_consent_container .ppms_btn.ppms_left {
   margin-left: 0;
   margin-right: auto;
@@ -304,6 +307,14 @@
   background-color: #e2e5e8;
 }
 #ppms_consent_container .ppms_btn.ppms_pale-metal-gray:hover {
+  background-color: #c6ccd1;
+}
+#ppms_consent_container .ppms_btn#ppms_reject_all {
+  color: #10131a;
+  background-color: #e2e5e8;
+  border: 1px solid #d2d6e4;
+}
+#ppms_consent_container .ppms_btn#ppms_reject_all:hover {
   background-color: #c6ccd1;
 }
 #ppms_consent_container .ppms_turbobox {

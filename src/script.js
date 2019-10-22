@@ -213,11 +213,13 @@ import assign from 'object.assign'
         const hide_detailed = document.getElementById('ppms_hide_detailed')
         const detailed_settings = document.getElementById('ppms_detailed_settings')
         const agree_all = document.getElementById('ppms_agree_all')
+        const reject_all = document.getElementById('ppms_reject_all')
         const save_choices = document.getElementById('ppms_save_choices')
         const privacy_consent_link = document.getElementById('ppms_consent_link')
         const consent_error = document.getElementById('ppms_consent_error')
         const refresh_page = document.getElementById('ppms_refresh_page')
         const names_list = document.getElementById('ppms_consent_fields_name_list').children[0].children
+        const hide_message = document.getElementById('ppms_hide_message')
     
         refresh_page.onclick = () => {
             window.location.href = window.location.href
@@ -376,6 +378,12 @@ import assign from 'object.assign'
                     }
     
                     this.confirmConsents(consents)
+                } else if (!all) {
+                    for (let k in consents.consents) {
+                        consents.consents[`${k}`].status = 0;
+                    }
+    
+                    this.confirmConsents(consents)
                 }
     
                 this.setState( { updateConsents: consents } );
@@ -386,6 +394,12 @@ import assign from 'object.assign'
                 
                 agree_all.onclick = () => {
                     this.updateConsents({ all: true })
+                }
+                reject_all.onclick = () => {
+                    this.updateConsents({ all: false })
+                }
+                hide_message.onclick = function () {
+                    consent_container.rmClass('ppms_active')
                 }
                 save_choices.onclick = () => {
                     this.confirmConsents(updateConsents)
