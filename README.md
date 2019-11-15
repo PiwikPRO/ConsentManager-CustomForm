@@ -29,16 +29,16 @@ Include JS script before `</body>` HTML element on your site.
 
 ```
 <script>
-    var ppms_consenturl="https://cdn.piwik.pro/consent/1.1.0/form.html";
+    var ppms_consenturl="https://cdn.piwik.pro/consent/1.1.1/form.html";
 </script>
-<script src="https://cdn.piwik.pro/consent/1.1.0/script.min.js" integrity="sha384-lygGKHTWa1t5vmtzcuqMu+8lSJMvrjmjSjUPtGHdNw9ECkG5lhO+yT84ZDZwomqu" crossorigin="anonymous"></script>
+<script src="https://cdn.piwik.pro/consent/1.1.1/script.min.js" integrity="sha384-lygGKHTWa1t5vmtzcuqMu+8lSJMvrjmjSjUPtGHdNw9ECkG5lhO+yT84ZDZwomqu" crossorigin="anonymous"></script>
 ```
 
 ### Style
 Include CSS style after `<head>` HTML element on your site.
 
 ```
-<link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.1.0/style.min.css' integrity="sha384-DqTbs8R8D2euyCDTPA0lOFt/dC1wZw0P23QBg8kpHkmRDdUZZik4AuSdvmOmGqLX" crossorigin="anonymous" />
+<link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.1.1/style.min.css' integrity="sha384-DqTbs8R8D2euyCDTPA0lOFt/dC1wZw0P23QBg8kpHkmRDdUZZik4AuSdvmOmGqLX" crossorigin="anonymous" />
 ```
 
 ### Privacy Settings
@@ -53,15 +53,15 @@ Insert consent form link on your privacy policy page section that will display a
 ```
 <html>
     <head>
-        <link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.1.0/style.min.css' integrity="sha384-DqTbs8R8D2euyCDTPA0lOFt/dC1wZw0P23QBg8kpHkmRDdUZZik4AuSdvmOmGqLX" crossorigin="anonymous" />
+        <link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.1.1/style.min.css' integrity="sha384-DqTbs8R8D2euyCDTPA0lOFt/dC1wZw0P23QBg8kpHkmRDdUZZik4AuSdvmOmGqLX" crossorigin="anonymous" />
     </head>
     <body>
         <!-- paste Piwik PRO Tracking Code here -->
         
         <button id="ppms_consent_link">Privacy settings</button>
         
-        <script>var ppms_consenturl='https://cdn.piwik.pro/consent/1.1.0/form.html';</script>
-        <script src="https://cdn.piwik.pro/consent/1.1.0/script.min.js" integrity="sha384-lygGKHTWa1t5vmtzcuqMu+8lSJMvrjmjSjUPtGHdNw9ECkG5lhO+yT84ZDZwomqu" crossorigin="anonymous"></script>
+        <script>var ppms_consenturl='https://cdn.piwik.pro/consent/1.1.1/form.html';</script>
+        <script src="https://cdn.piwik.pro/consent/1.1.1/script.min.js" integrity="sha384-lygGKHTWa1t5vmtzcuqMu+8lSJMvrjmjSjUPtGHdNw9ECkG5lhO+yT84ZDZwomqu" crossorigin="anonymous"></script>
     </body>
 </html>
 ```
