@@ -68,6 +68,11 @@ Insert consent form link on your privacy policy page section that will display a
 
 ## Changelog
 
+**1.1.1**
+
+*Release date: 15.11.2019*
+* Added `cookie expiration` information.
+
 **1.1.0**
 
 *Release date: 22.10.2019*
