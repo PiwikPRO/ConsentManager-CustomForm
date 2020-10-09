@@ -321,32 +321,32 @@ import assign from 'object.assign'
                     consentFields.map( elem => {
                         if ( elem.getAttribute('data-key') === key ) {
     
-                            elem.addClass('ppms_visible');
-                            [...names_list].map( li => {
-                                if (li.getAttribute('data-key') === key) {
-                                    li.addClass('ppms_visible')
-                                }
-                            })
-    
-                            if (updateConsents.consents[key]) {
-                                let updateConsent = updateConsents.consents[key];
-                                elem.setAttribute('status', updateConsent && updateConsent.status == -1 ? 0 : updateConsent.status)
-            
-                                if (updateConsent && updateConsent.status == -1) consent_container.addClass('ppms_active')
-                            } else {
-                                let privacyConsent = privacySettings.consents[key];
-                                elem.setAttribute('status', privacyConsent && privacyConsent.status == -1 ? 0 : privacyConsent.status)
-            
-                                if (privacyConsent && privacyConsent.status == -1) consent_container.addClass('ppms_active')
-            
-                                updateConsents.consents[key] = { status: parseInt( elem.getAttribute('status') ) }
+                            const showOption = () => {
+                                elem.addClass('ppms_visible');
+                                [...names_list].map( li => li.getAttribute('data-key') === key && li.addClass('ppms_visible') )
                             }
-                            
-                            arr.push(elem)
+
+                            let privacyConsent = privacySettings.consents[key],
+                                updateConsent = updateConsents.consents[key];
+    
+                            if ( updateConsent ) {
+                                elem.setAttribute('status', updateConsent.status == -1 ? 0 : updateConsent.status)
+                                if (updateConsent.status == -1) consent_container.addClass('ppms_active')
+
+                                showOption()
+                                arr.push(elem)
+                            } else if ( privacyConsent ) {
+                                elem.setAttribute('status', privacyConsent && privacyConsent.status == -1 ? 0 : privacyConsent.status)
+                                if (privacyConsent.status == -1) consent_container.addClass('ppms_active')
+                                updateConsent = { status: parseInt( elem.getAttribute('status') ) }
+
+                                showOption()
+                                arr.push(elem)
+                            }
                         }
                     })
                 })
-    
+
                 return arr
             }
     
