@@ -255,7 +255,7 @@ import assign from 'object.assign'
                     existingConsents: undefined,
                     createdConsents: undefined,
                     privacySettings: undefined,
-                    updateConsents: { consents: {} }
+                    updatedConsents: { consents: {} }
                 }
             }
     
@@ -299,17 +299,17 @@ import assign from 'object.assign'
             }
     
             confirmConsents(setData) {
-                this.ppms.cm.api('setComplianceSettings', setData, (settings) => {
+                this.ppms.cm.api('setComplianceSettings', setData, settings => {
                     consent_container.rmClass('ppms_active')
                     consent_error.rmClass('ppms_active')
-                }, (err) => {
+                }, err => {
                     consent_container.addClass('ppms_active')
                     consent_error.addClass('ppms_active')
                 })
-            }   
+            }
     
             displayConsents() {
-                const { createdConsents, existingConsents, privacySettings, updateConsents } = this.state
+                const { createdConsents, existingConsents, privacySettings, updatedConsents } = this.state
                 
                 let arr = [];
     
@@ -327,7 +327,7 @@ import assign from 'object.assign'
                             }
 
                             let privacyConsent = privacySettings.consents[key],
-                                updateConsent = updateConsents.consents[key];
+                                updateConsent = updatedConsents.consents[key];
     
                             if ( updateConsent ) {
                                 elem.setAttribute('status', updateConsent.status == -1 ? 0 : updateConsent.status)
@@ -351,59 +351,42 @@ import assign from 'object.assign'
             }
     
             updateConsents(_options) {
-                const { privacySettings, updateConsents } = this.state
+                const { privacySettings, updatedConsents } = this.state
                 
                 let defaults = { key: false, all: false },
-                    options = applyDefaults(defaults, _options);
+                    options = assign(defaults, _options);
     
                 const key = options.key
                 const all = options.all
     
-                let consents = assign({}, updateConsents);
+                let changingConsents = assign({}, updatedConsents);
     
                 if (key) {
                     let status;
-                    if (updateConsents && updateConsents.consents[key]) {
-                        status = updateConsents.consents[key].status
+                    if (updatedConsents && updatedConsents.consents[key]) {
+                        status = updatedConsents.consents[key].status
                     } else {
                         status = privacySettings.consents[key] ? privacySettings.consents[key].status : 0
                     }
     
                     status = status == 1 ? 0 : 1
-                    consents.consents[`${key}`] = { status };
-    
-                } else if (all) {
-                    for (let k in consents.consents) {
-                        consents.consents[`${k}`].status = 1;
-                    }
-    
-                    this.confirmConsents(consents)
-                } else if (!all) {
-                    for (let k in consents.consents) {
-                        consents.consents[`${k}`].status = 0;
-                    }
-    
-                    this.confirmConsents(consents)
+                    changingConsents.consents[`${key}`] = { status };
+                } else {
+                    changingConsents = assign({}, privacySettings);
+                    for (let k in changingConsents.consents) changingConsents.consents[`${k}`].status = all ? 1 : 0;
+                    this.confirmConsents(changingConsents)
                 }
     
-                this.setState( { updateConsents: consents } );
+                this.setState( { updatedConsents: changingConsents } );
             }
     
             render() {
-                const { updateConsents } = this.state
+                const { updatedConsents } = this.state
                 
-                agree_all.onclick = () => {
-                    this.updateConsents({ all: true })
-                }
-                reject_all.onclick = () => {
-                    this.updateConsents({ all: false })
-                }
-                hide_message.onclick = function () {
-                    consent_container.rmClass('ppms_active')
-                }
-                save_choices.onclick = () => {
-                    this.confirmConsents(updateConsents)
-                }
+                agree_all.onclick = () => this.updateConsents({ all: true })
+                reject_all.onclick = () => this.updateConsents({ all: false })
+                hide_message.onclick = function () { consent_container.rmClass('ppms_active') }
+                save_choices.onclick = () => this.confirmConsents(updatedConsents)
                 
                 // open consent popup in privacy settings
                 if (privacy_consent_link) {
@@ -414,9 +397,7 @@ import assign from 'object.assign'
                 }
     
                 this.displayConsents().map(( elem ) => {
-                    elem.onclick = () => {
-                        this.updateConsents({ key: elem.getAttribute('data-key') })
-                    }
+                    elem.onclick = () =>  this.updateConsents({ key: elem.getAttribute('data-key') })
                     if ( elem.getAttribute('status') == 1 ) {
                         elem.querySelector('.ppms_consent_switcher').addClass('ppms_checked')
                     } else {
