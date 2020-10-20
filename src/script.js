@@ -255,7 +255,7 @@ import assign from 'object.assign'
                     existingConsents: undefined,
                     createdConsents: undefined,
                     privacySettings: undefined,
-                    updatedConsents: { consents: {} }
+                    updateConsents: { consents: {} }
                 }
             }
     
@@ -299,17 +299,17 @@ import assign from 'object.assign'
             }
     
             confirmConsents(setData) {
-                this.ppms.cm.api('setComplianceSettings', setData, settings => {
+                this.ppms.cm.api('setComplianceSettings', setData, (settings) => {
                     consent_container.rmClass('ppms_active')
                     consent_error.rmClass('ppms_active')
-                }, err => {
+                }, (err) => {
                     consent_container.addClass('ppms_active')
                     consent_error.addClass('ppms_active')
                 })
-            }
+            }   
     
             displayConsents() {
-                const { createdConsents, existingConsents, privacySettings, updatedConsents } = this.state
+                const { createdConsents, existingConsents, privacySettings, updateConsents } = this.state
                 
                 let arr = [];
     
@@ -321,72 +321,93 @@ import assign from 'object.assign'
                     consentFields.map( elem => {
                         if ( elem.getAttribute('data-key') === key ) {
     
-                            const showOption = () => {
-                                elem.addClass('ppms_visible');
-                                [...names_list].map( li => li.getAttribute('data-key') === key && li.addClass('ppms_visible') )
-                            }
-
-                            let privacyConsent = privacySettings.consents[key],
-                                updateConsent = updatedConsents.consents[key];
+                            elem.addClass('ppms_visible');
+                            [...names_list].map( li => {
+                                if (li.getAttribute('data-key') === key) {
+                                    li.addClass('ppms_visible')
+                                }
+                            })
     
-                            if ( updateConsent ) {
-                                elem.setAttribute('status', updateConsent.status == -1 ? 0 : updateConsent.status)
-                                if (updateConsent.status == -1) consent_container.addClass('ppms_active')
+                            if (updateConsents.consents[key]) {
+                                let updateConsent = updateConsents.consents[key];
 
-                                showOption()
-                                arr.push(elem)
-                            } else if ( privacyConsent ) {
+                                if (typeof updateConsent.status == 'undefined') return arr
+
+                                elem.setAttribute('status', updateConsent && updateConsent.status == -1 ? 0 : updateConsent.status)
+                                if (updateConsent && updateConsent.status == -1) consent_container.addClass('ppms_active')
+                            } else {
+                                let privacyConsent = privacySettings.consents[key];
+
+                                if (typeof privacyConsent.status == 'undefined') return arr
+
                                 elem.setAttribute('status', privacyConsent && privacyConsent.status == -1 ? 0 : privacyConsent.status)
-                                if (privacyConsent.status == -1) consent_container.addClass('ppms_active')
-                                updateConsent = { status: parseInt( elem.getAttribute('status') ) }
-
-                                showOption()
-                                arr.push(elem)
+                                if (privacyConsent && privacyConsent.status == -1) consent_container.addClass('ppms_active')
+            
+                                updateConsents.consents[key] = { status: parseInt( elem.getAttribute('status') ) }
                             }
+                            
+                            arr.push(elem)
                         }
                     })
                 })
-
+    
                 return arr
             }
     
             updateConsents(_options) {
-                const { privacySettings, updatedConsents } = this.state
+                const { privacySettings, updateConsents } = this.state
                 
                 let defaults = { key: false, all: false },
-                    options = assign(defaults, _options);
+                    options = applyDefaults(defaults, _options);
     
                 const key = options.key
                 const all = options.all
     
-                let changingConsents = assign({}, updatedConsents);
+                let consents = assign({}, updateConsents);
     
                 if (key) {
                     let status;
-                    if (updatedConsents && updatedConsents.consents[key]) {
-                        status = updatedConsents.consents[key].status
+                    if (updateConsents && updateConsents.consents[key]) {
+                        status = updateConsents.consents[key].status
                     } else {
                         status = privacySettings.consents[key] ? privacySettings.consents[key].status : 0
                     }
     
                     status = status == 1 ? 0 : 1
-                    changingConsents.consents[`${key}`] = { status };
-                } else {
-                    changingConsents = assign({}, privacySettings);
-                    for (let k in changingConsents.consents) changingConsents.consents[`${k}`].status = all ? 1 : 0;
-                    this.confirmConsents(changingConsents)
+                    consents.consents[`${key}`] = { status };
+    
+                } else if (all) {
+                    for (let k in consents.consents) {
+                        consents.consents[`${k}`].status = 1;
+                    }
+    
+                    this.confirmConsents(consents)
+                } else if (!all) {
+                    for (let k in consents.consents) {
+                        consents.consents[`${k}`].status = 0;
+                    }
+    
+                    this.confirmConsents(consents)
                 }
     
-                this.setState( { updatedConsents: changingConsents } );
+                this.setState( { updateConsents: consents } );
             }
     
             render() {
-                const { updatedConsents } = this.state
+                const { updateConsents } = this.state
                 
-                agree_all.onclick = () => this.updateConsents({ all: true })
-                reject_all.onclick = () => this.updateConsents({ all: false })
-                hide_message.onclick = function () { consent_container.rmClass('ppms_active') }
-                save_choices.onclick = () => this.confirmConsents(updatedConsents)
+                agree_all.onclick = () => {
+                    this.updateConsents({ all: true })
+                }
+                reject_all.onclick = () => {
+                    this.updateConsents({ all: false })
+                }
+                hide_message.onclick = function () {
+                    consent_container.rmClass('ppms_active')
+                }
+                save_choices.onclick = () => {
+                    this.confirmConsents(updateConsents)
+                }
                 
                 // open consent popup in privacy settings
                 if (privacy_consent_link) {
@@ -397,7 +418,8 @@ import assign from 'object.assign'
                 }
     
                 this.displayConsents().map(( elem ) => {
-                    elem.onclick = () =>  this.updateConsents({ key: elem.getAttribute('data-key') })
+                    elem.onclick = () => this.updateConsents({ key: elem.getAttribute('data-key') })
+                    
                     if ( elem.getAttribute('status') == 1 ) {
                         elem.querySelector('.ppms_consent_switcher').addClass('ppms_checked')
                     } else {
