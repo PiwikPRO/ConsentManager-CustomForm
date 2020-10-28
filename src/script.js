@@ -255,7 +255,7 @@ import assign from 'object.assign'
                     existingConsents: undefined,
                     createdConsents: undefined,
                     privacySettings: undefined,
-                    updateConsents: { consents: {} }
+                    updatedConsents: { consents: {} }
                 }
             }
     
@@ -309,7 +309,7 @@ import assign from 'object.assign'
             }   
     
             displayConsents() {
-                const { createdConsents, existingConsents, privacySettings, updateConsents } = this.state
+                const { createdConsents, existingConsents, privacySettings, updatedConsents } = this.state
                 
                 let arr = [];
     
@@ -328,22 +328,24 @@ import assign from 'object.assign'
                                 }
                             })
     
-                            if (updateConsents.consents[key]) {
-                                let updateConsent = updateConsents.consents[key];
+                            if (updatedConsents.consents[key]) {
+                                let updateConsent = updatedConsents.consents[key];
 
-                                if (typeof updateConsent.status == 'undefined') return arr
+                                if ( updateConsent && typeof updateConsent.status !== 'undefined' ) {
+                                    elem.setAttribute('status', updateConsent && updateConsent.status == -1 ? 0 : updateConsent.status)
+                                    if (updateConsent && updateConsent.status == -1) consent_container.addClass('ppms_active')
+                                }
 
-                                elem.setAttribute('status', updateConsent && updateConsent.status == -1 ? 0 : updateConsent.status)
-                                if (updateConsent && updateConsent.status == -1) consent_container.addClass('ppms_active')
                             } else {
                                 let privacyConsent = privacySettings.consents[key];
 
-                                if (typeof privacyConsent.status == 'undefined') return arr
+                                if ( privacyConsent && typeof privacyConsent.status !== 'undefined' ) {
+                                    elem.setAttribute('status', privacyConsent && privacyConsent.status == -1 ? 0 : privacyConsent.status)
+                                    if (privacyConsent && privacyConsent.status == -1) consent_container.addClass('ppms_active')
+                
+                                    updatedConsents.consents[key] = { status: parseInt( elem.getAttribute('status') ) }
+                                }
 
-                                elem.setAttribute('status', privacyConsent && privacyConsent.status == -1 ? 0 : privacyConsent.status)
-                                if (privacyConsent && privacyConsent.status == -1) consent_container.addClass('ppms_active')
-            
-                                updateConsents.consents[key] = { status: parseInt( elem.getAttribute('status') ) }
                             }
                             
                             arr.push(elem)
@@ -355,7 +357,7 @@ import assign from 'object.assign'
             }
     
             updateConsents(_options) {
-                const { privacySettings, updateConsents } = this.state
+                const { privacySettings, updatedConsents } = this.state
                 
                 let defaults = { key: false, all: false },
                     options = applyDefaults(defaults, _options);
@@ -363,12 +365,12 @@ import assign from 'object.assign'
                 const key = options.key
                 const all = options.all
     
-                let consents = assign({}, updateConsents);
+                let consents = assign({}, updatedConsents);
     
                 if (key) {
                     let status;
-                    if (updateConsents && updateConsents.consents[key]) {
-                        status = updateConsents.consents[key].status
+                    if (updatedConsents && updatedConsents.consents[key]) {
+                        status = updatedConsents.consents[key].status
                     } else {
                         status = privacySettings.consents[key] ? privacySettings.consents[key].status : 0
                     }
@@ -390,11 +392,11 @@ import assign from 'object.assign'
                     this.confirmConsents(consents)
                 }
     
-                this.setState( { updateConsents: consents } );
+                this.setState( { updatedConsents: consents } );
             }
     
             render() {
-                const { updateConsents } = this.state
+                const { updatedConsents } = this.state
                 
                 agree_all.onclick = () => {
                     this.updateConsents({ all: true })
@@ -406,7 +408,7 @@ import assign from 'object.assign'
                     consent_container.rmClass('ppms_active')
                 }
                 save_choices.onclick = () => {
-                    this.confirmConsents(updateConsents)
+                    this.confirmConsents(updatedConsents)
                 }
                 
                 // open consent popup in privacy settings
