@@ -78,15 +78,6 @@ import assign from 'object.assign'
         }());
     }
     
-    const applyDefaults = (defaults, options) => {
-        for (var k in defaults) {
-            if (options && !options.hasOwnProperty(k)) {
-                options[k] = defaults[k];
-            }
-        }
-        return options;
-    }
-    
     const ajax = (path, success, error) => {
         if ( window.XMLHttpRequest ) {
             let xhr = new XMLHttpRequest();
@@ -296,13 +287,28 @@ import assign from 'object.assign'
             componentDidMount() {
                 this.getPPMSsettings()
                 this.render()
+
+                const { updatedConsents } = this.state
+                
+                agree_all.onclick = () => this.updateConsents({ all: true })
+                reject_all.onclick = () => this.updateConsents({ all: false })
+                hide_message.onclick = () => consent_container.rmClass('ppms_active')
+                save_choices.onclick = () => this.confirmConsents(updatedConsents)
+
+                // open consent popup in privacy settings
+                if (privacy_consent_link) {
+                    privacy_consent_link.addEventListener('click', () => {
+                        consent_container.addClass('ppms_active')
+                        show_detailed.click()
+                    })
+                }
             }
     
-            confirmConsents(setData) {
-                this.ppms.cm.api('setComplianceSettings', setData, (settings) => {
+            confirmConsents( consentsHandler ) { 
+                this.ppms.cm.api('setComplianceSettings', consentsHandler, settings => {
                     consent_container.rmClass('ppms_active')
                     consent_error.rmClass('ppms_active')
-                }, (err) => {
+                }, err => {
                     consent_container.addClass('ppms_active')
                     consent_error.addClass('ppms_active')
                 })
@@ -357,15 +363,16 @@ import assign from 'object.assign'
             }
     
             updateConsents(_options) {
-                const { privacySettings, updatedConsents } = this.state
+                const { privacySettings, updatedConsents, createdConsents, existingConsents } = this.state
                 
                 let defaults = { key: false, all: false },
-                    options = applyDefaults(defaults, _options);
+                    options = assign({}, defaults, _options);
     
                 const key = options.key
                 const all = options.all
     
-                let consents = assign({}, updatedConsents);
+                const consentsHandler = assign({}, updatedConsents); // comment this line for bug test
+                // const consentsHandler = { consents: {} }; // uncomment this line for bug test
     
                 if (key) {
                     let status;
@@ -376,49 +383,21 @@ import assign from 'object.assign'
                     }
     
                     status = status == 1 ? 0 : 1
-                    consents.consents[`${key}`] = { status };
-    
-                } else if (all) {
-                    for (let k in consents.consents) {
-                        consents.consents[`${k}`].status = 1;
+                    consentsHandler.consents[`${key}`] = { status };
+                } else {
+                    const setAllConsents = status => {
+                        createdConsents instanceof Array && createdConsents.map( k => { consentsHandler.consents[k] = { status } })
+                        existingConsents instanceof Array && existingConsents.map( k => { consentsHandler.consents[k] = { status } })
+                        this.confirmConsents(consentsHandler)
                     }
-    
-                    this.confirmConsents(consents)
-                } else if (!all) {
-                    for (let k in consents.consents) {
-                        consents.consents[`${k}`].status = 0;
-                    }
-    
-                    this.confirmConsents(consents)
+
+                    all ? setAllConsents(1) : setAllConsents(0)
                 }
-    
-                this.setState( { updatedConsents: consents } );
+                
+                this.setState({ updatedConsents: consentsHandler }); // comment this line for bug test
             }
     
             render() {
-                const { updatedConsents } = this.state
-                
-                agree_all.onclick = () => {
-                    this.updateConsents({ all: true })
-                }
-                reject_all.onclick = () => {
-                    this.updateConsents({ all: false })
-                }
-                hide_message.onclick = function () {
-                    consent_container.rmClass('ppms_active')
-                }
-                save_choices.onclick = () => {
-                    this.confirmConsents(updatedConsents)
-                }
-                
-                // open consent popup in privacy settings
-                if (privacy_consent_link) {
-                    privacy_consent_link.addEventListener('click', () => {
-                        consent_container.addClass('ppms_active')
-                        show_detailed.click()
-                    })
-                }
-    
                 this.displayConsents().map(( elem ) => {
                     elem.onclick = () => this.updateConsents({ key: elem.getAttribute('data-key') })
                     
@@ -428,7 +407,6 @@ import assign from 'object.assign'
                         elem.querySelector('.ppms_consent_switcher').rmClass('ppms_checked')
                     }
                 })
-    
             }
         }
     
@@ -441,7 +419,7 @@ import assign from 'object.assign'
     }
     
     const consentManagerAPI = (url) => {
-        window.addEventListener("load", () => { 
+        window.addEventListener("load", () => {
             if ( typeof( sevenTag ) == 'object' ) {
                 if (url) {
                     ajax( url, (data) => {
