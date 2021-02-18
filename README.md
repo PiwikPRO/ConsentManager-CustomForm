@@ -29,17 +29,21 @@ Include JS script before `</body>` HTML element on your site.
 
 ```
 <script>
-    var ppms_consenturl="https://cdn.piwik.pro/consent/1.1.6/form.html";
+    var ppms_consenturl="https://example.com/path/to/form.html";
 </script>
-<script src="https://cdn.piwik.pro/consent/1.1.6/script.min.js" integrity="sha384-bzn8FbhmVbr6Bdu5DiJ7CwvaVvFbn4QHxNi7G42MCo8hhpx9mgwcJsF4Fs8MxOMX" crossorigin="anonymous"></script>
+<script src="https://example.com/path/to/script.min.js"></script>
 ```
+
+**Remember:** change `https://example.com/path/to/` to an appropriate path on your site. 
 
 ### Style
 Include CSS style after `<head>` HTML element on your site.
 
 ```
-<link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.1.6/style.min.css' integrity="sha384-DqTbs8R8D2euyCDTPA0lOFt/dC1wZw0P23QBg8kpHkmRDdUZZik4AuSdvmOmGqLX" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://example.com/path/to/style.min.css" />
 ```
+
+**Remember:** change `https://example.com/path/to/` to an appropriate path on your site.
 
 ### Privacy Settings
 Insert consent form link on your privacy policy page section that will display a popup with consent settings.
@@ -53,20 +57,27 @@ Insert consent form link on your privacy policy page section that will display a
 ```
 <html>
     <head>
-        <link rel="stylesheet" href='https://cdn.piwik.pro/consent/1.1.6/style.min.css' integrity="sha384-DqTbs8R8D2euyCDTPA0lOFt/dC1wZw0P23QBg8kpHkmRDdUZZik4AuSdvmOmGqLX" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://example.com/path/to/style.min.css" />
     </head>
     <body>
         <!-- paste Piwik PRO Tracking Code here -->
         
         <button id="ppms_consent_link">Privacy settings</button>
         
-        <script>var ppms_consenturl='https://cdn.piwik.pro/consent/1.1.6/form.html';</script>
-        <script src="https://cdn.piwik.pro/consent/1.1.6/script.min.js" integrity="sha384-bzn8FbhmVbr6Bdu5DiJ7CwvaVvFbn4QHxNi7G42MCo8hhpx9mgwcJsF4Fs8MxOMX" crossorigin="anonymous"></script>
+        <script>var ppms_consenturl="https://example.com/path/to/form.html";</script>
+        <script src="https://example.com/path/to/script.min.js"></script>
     </body>
 </html>
 ```
 
+**Remember:** change `https://example.com/path/to/` to an appropriate path on your site.
+
 ## Changelog
+
+**1.1.7**
+
+*Release date: 18.02.2021*
+* Disabled support for cdn.
 
 **1.1.6**
 
@@ -116,4 +127,4 @@ Insert consent form link on your privacy policy page section that will display a
 
 ## License
 
-GPL3.0+ see LICENSE.txt and AUTHORS.txt
+GPL3.0+ see [LICENSE.txt](LICENSE.txt) and [AUTHORS.txt](AUTHORS.txt)
