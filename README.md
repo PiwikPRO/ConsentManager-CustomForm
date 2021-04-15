@@ -1,5 +1,7 @@
 # Piwik PRO Consent Manager Custom Form
 
+**NOTE:** This repository is **DEPRECATED** and is no longer supported, please consider using [Piwik PRO Custom consent form example](https://developers.piwik.pro/en/latest/consent_manager/custom_consent_form/index.html#example-implementation) instead.
+
 Use Consent Manager JavaScript API to serve your own custom consent forms, overriding Piwik PRO consent templates.
   
 Thanks to that you’ll be able to build own consents form with the behavior you expect.
@@ -73,6 +75,11 @@ Insert consent form link on your privacy policy page section that will display a
 **Remember:** change `https://example.com/path/to/` to an appropriate path on your site.
 
 ## Changelog
+
+**1.1.8**
+
+*Release date: 15.04.2021*
+* Marked this repository as archived and read-only.
 
 **1.1.7**
 
